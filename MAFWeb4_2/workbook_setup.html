@@ -1,0 +1,59 @@
+
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MAF — Workbook Setup (v4.2)</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head><body>
+  <div class="nav"><div class="brand">
+    <img class="logo" src="assets/logo.svg" alt="MAF"><div class="title">MAF — Workbook Setup</div>
+  </div><div class="row"><a class="pill" href="index.html">Home</a></div></div>
+
+  <div class="container grid cols-2">
+    <div class="card"><h2>Choose your Avatar</h2><div id="avatars" class="avatar-grid"></div></div>
+    <div class="card"><h2>Session Settings</h2>
+      <div class="row" style="gap:16px">
+        <div style="flex:1"><div class="label">Grade</div>
+          <select id="grade" class="input"><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></div>
+        <div style="flex:1"><div class="label">Difficulty</div>
+          <select id="difficulty" class="input"><option value="easy">Easy</option><option value="medium">Medium</option><option value="hard">Hard</option></select></div>
+      </div>
+      <div class="label" style="margin-top:10px">Problem Types</div>
+      <div class="row" style="flex-wrap:wrap">
+        <label class="badge"><input type="checkbox" id="t_add" checked> &nbsp;Addition</label>
+        <label class="badge"><input type="checkbox" id="t_sub" checked> &nbsp;Subtraction</label>
+        <label class="badge"><input type="checkbox" id="t_mul"> &nbsp;Multiplication</label>
+        <label class="badge"><input type="checkbox" id="t_div"> &nbsp;Division</label>
+        <label class="badge"><input type="checkbox" id="t_cda"> &nbsp;Analog Clock</label>
+        <label class="badge"><input type="checkbox" id="t_cdd"> &nbsp;Digital Clock</label>
+        <label class="badge"><input type="checkbox" id="t_tmd"> &nbsp;Time Elapsed</label>
+        <label class="badge"><input type="checkbox" id="t_word"> &nbsp;Word Problems</label>
+      </div>
+      <div class="label" style="margin-top:10px">Total Questions</div>
+      <select id="total" class="input"><option>5</option><option selected>10</option><option>15</option><option>20</option></select>
+      <hr/><div class="row"><button id="start" class="btn primary">Start Workbook</button>
+      <span class="small">You'll see stats during the session.</span></div>
+    </div></div>
+  <div id="toast" class="toast"></div>
+
+  <script type="module">
+    import { el, els, toast } from "./js/utils.js";
+    const avatarsEl = el("#avatars"); const totalAvatars = 12; let selected = "assets/avatars/a1.svg";
+    for(let i=1;i<=totalAvatars;i++){
+      const d = document.createElement("div"); d.className="avatar" + (i===1? " selected": ""); d.dataset.src = `assets/avatars/a${i}.svg`;
+      d.innerHTML = `<img src="assets/avatars/a${i}.svg" width="40" height="40" alt="avatar ${i}">`;
+      d.addEventListener("click", ()=>{ els(".avatar").forEach(x=> x.classList.remove("selected")); d.classList.add("selected"); selected = d.dataset.src; });
+      avatarsEl.appendChild(d);
+    }
+    el("#start").addEventListener("click", ()=>{
+      const grade = parseInt(el("#grade").value,10); const difficulty = el("#difficulty").value; const types = [];
+      if(el("#t_add").checked) types.push("add"); if(el("#t_sub").checked) types.push("sub");
+      if(el("#t_mul").checked) types.push("mul"); if(el("#t_div").checked) types.push("div");
+      if(el("#t_cda").checked) types.push("clock_analog"); if(el("#t_cdd").checked) types.push("clock_digital");
+      if(el("#t_tmd").checked) types.push("time_diff"); if(el("#t_word").checked) types.push("word");
+      if(types.length===0){ toast("Pick at least one problem type"); return; }
+      const total = parseInt(el("#total").value, 10);
+      const cfg = { grade, difficulty, types, avatar: selected, total }; localStorage.setItem("maf_setup", JSON.stringify(cfg));
+      location.href = "workbook.html";
+    });
+  </script>
+</body></html>

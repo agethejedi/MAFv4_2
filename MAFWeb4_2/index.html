@@ -1,0 +1,28 @@
+
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MAF — Math + Fun (v4.2)</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head><body>
+  <div class="nav"><div class="brand">
+    <img class="logo" src="assets/logo.svg" alt="MAF"><div class="title">MAF — Math + Fun</div>
+  </div><div class="row">
+    <a class="pill" href="login.html">Login</a>
+    <a class="pill" href="workbook_setup.html">Start Workbook</a>
+    <a class="pill" href="redeem.html">Redeem</a>
+  </div></div>
+
+  <div class="container grid cols-3">
+    <div class="card"><h2>Workbook</h2>
+      <p>Practice for Grades 1–3 incl. <strong>clocks</strong>, <strong>elapsed time</strong>, and <strong>word problems</strong>.</p>
+      <button class="btn primary" onclick="location.href='workbook_setup.html'">Start</button></div>
+    <div class="card"><h2>Performance</h2>
+      <p>Accuracy, pace, streaks; rank at the end (cloud when Firebase enabled).</p>
+      <button class="btn" onclick="location.href='workbook.html'">Resume</button></div>
+    <div class="card"><h2>Robux Redemption</h2>
+      <p>Parents redeem codes. Uses Firestore transaction when connected.</p>
+      <button class="btn" onclick="location.href='redeem.html'">Open</button></div>
+  </div>
+
+  <div class="container"><div class="small">v4.2 — Works offline; auto-connects to Firebase if configured.</div></div>
+</body></html>
