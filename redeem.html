@@ -1,0 +1,38 @@
+
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MAF — Redeem Robux</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head><body>
+  <div class="nav"><div class="brand">
+    <img class="logo" src="assets/logo.svg" alt="MAF"><div class="title">MAF — Redeem</div>
+  </div><div class="row"><a class="pill" href="index.html">Home</a></div></div>
+
+  <div class="container"><div class="card">
+    <h2>Enter Code</h2><div class="label">Robux Code</div>
+    <input class="input" id="code" placeholder="XXXX-YYYY-ZZZZ"/>
+    <div class="row" style="margin-top:10px"><button id="redeem" class="btn primary">Redeem</button></div>
+    <div class="footer-note">
+      Demo: codes starting with <strong>FREE</strong> work once. With Firebase, uses a Firestore transaction at <code>/robux_codes/{code}</code>.
+    </div>
+  </div></div>
+
+  <div id="toast" class="toast"></div>
+  <script type="module">
+    import { el, toast } from "./js/utils.js";
+    import { isFirebaseConfigured } from "./js/firebase-init.js";
+    import { redeemCode } from "./js/firebase-live.js";
+    import { MockAuth, MockDB } from "./js/mockFirebase.js";
+    const user = JSON.parse(localStorage.getItem("maf_current_user")||"null") || MockAuth.load() || { uid: "guest", email:"guest@local" };
+    const useFirebase = isFirebaseConfigured();
+    el("#redeem").addEventListener("click", async ()=>{
+      const code = el("#code").value.trim().toUpperCase(); if(!code){ toast("Enter a code"); return; }
+      if(useFirebase){
+        try{ await redeemCode(code, user.uid); toast("Success: Reward added!"); }
+        catch(e){ console.error(e); toast("Failed: " + (e.message||"error")); }
+      }else{
+        const r = MockDB.redeem(code, user.uid); toast(r.ok ? ("Success: "+r.reward) : ("Failed: " + r.reason));
+      }
+    });
+  </script>
+</body></html>
