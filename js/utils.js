@@ -91,7 +91,7 @@ export function makeProblem({grade=1, types=["add","sub"], difficulty="easy"}){
     const startH = randInt(1,11); const startM = randInt(0,11)*5;
     const addMin = [10,15,20,25,30,35,40,45,50,55,60,75,90][randInt(0,12)];
     const endMins = startH*60 + startM + addMin;
-    const endH = ((endMins//60 -1) % 12)+1;
+    const endH = ((Math.floor(endMins/60) -1) % 12)+1;
     const endM = endMins % 60;
     const start = `${startH}:${String(startM).padStart(2,"0")}`;
     const end = `${endH}:${String(endM).padStart(2,"0")}`;
